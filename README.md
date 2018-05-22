@@ -1,5 +1,7 @@
 # Circular Buffer (using pthreads)
 
+(remember to link with -lpthread)
+
 To use this library, include something like this in your `main.c` (or wherever):
 
     #define CIRCULAR_LEN 128
