@@ -26,3 +26,17 @@ The API consists of the following methods:
     void circular_destroy(struct circular_s * buffer);
 
 Example usage:
+
+    struct circular_s buffer = {0};
+    assert(0 == circular_init(&buffer));
+
+    if (0 == fork()) {
+        assert(0 == circular_enqueue(&buffer, 3));
+        exit(EXIT_SUCCESS);
+    } else {
+        int popped = 0;
+        assert(0 == circular_pop(&buffer, &popped));
+        wait();
+    }
+    circular_destroy(&buffer);
+
