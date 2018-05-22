@@ -1,3 +1,18 @@
+// Some sanity checking here...  When time.h gets included, then
+// _POSIX_C_SOURCE must have been set to something larger than 199309L,
+// otherwise clock_gettime isn't declared.  See clock_getres(2) for details.
+// The logic to detect features is in features.h, and we are interested in
+// knowing wether features.h has been include, but __USE_POSIX199309 has *not*
+// been defined; that would mean that the user included time.h (or featuresh)
+// without first declaring _POSIX_C_SOURCE (or some other equivalent).
+#if (defined _FEATURES_H) && (!defined __USE_POSIX199309)
+#error circular.h requires _POSIX_C_SOURCE to be set to something equal to,\
+ or larger than, 199309L, when 'features.h' gets included. Either define\
+ _POSIX_C_SOURCE to something 199309L before any includes in your main.c,\
+ or pass the flag '-D_POSIX_C_SOURCE=199309L' to gcc (e.g. set it in your\
+ CFLAGS)
+#endif
+
 #ifndef __CIRCULAR_H
 #define __CIRCULAR_H
 
@@ -7,6 +22,12 @@
 
 #ifndef CIRCULAR_T
 # define CIRCULAR_T void * 
+#endif
+
+
+
+#ifndef _POSIX_C_SOURCE
+#define _POSIX_C_SOURCE 201805L
 #endif
 
 #include <time.h> /* struct timespec */
